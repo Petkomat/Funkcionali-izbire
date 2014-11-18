@@ -1,0 +1,7 @@
+Inverz funkcije overline za naravna števila:
+K x = K x Bool, enako za J x
+f: K Nat -> J Nat ima predpis
+
+f fi_S = pred -> if fi_S pred then f'(fi_S, pred, 1) else 1
+
+f' (fi, p, t) = if fi (\n -> p n & n<=t) then t else f'(fi,p,t+1)
