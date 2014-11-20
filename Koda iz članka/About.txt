@@ -1,0 +1,4 @@
+The file Paper.hs has been used to test the code snipets in the paper.
+The other *.hs files have self-contained, non-modular programs also
+extracted from the paper.
+

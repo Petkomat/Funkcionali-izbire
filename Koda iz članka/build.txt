@@ -1,0 +1,2 @@
+ghc -O2 --make TicTacToe.hs
+ghc -O2 --make NQueens.hs
