@@ -120,17 +120,19 @@ dbigotimes (e : es) =
  `dotimes` 
  (\x -> dbigotimes (map (\e xs -> e(x:xs)) es))
 
- 
+-- | Multiplication in monad @J r@.
 bigunion :: J r (J r x) -> J r x
 bigunion e = \p -> e(\d -> overline d p) p
 
-
+-- | Generalization of function @otimes'@ which works on any monad.
 mcons :: Monad m => m x -> m[x] -> m[x]
 xm `mcons` xsm =
     do x <- xm            
        xs <- xsm
        return (x:xs)
 
+-- | Alternative definition of the standard prelude function @sequence@, 
+-- which is a generalization of function @bigotimes@ to any monad.
 sequence' :: Monad m => [m x] -> m[x]
 sequence' [] = return []
 sequence' (xm : xms) = 
@@ -138,6 +140,7 @@ sequence' (xm : xms) =
        xs <- sequence' xms
        return(x : xs)
 
+-- | Generalization of function @dbigotimes@ to any monad.
 hsequence :: Monad m => [[x] -> m x] -> m[x]
 hsequence [] = return []
 hsequence (xm : xms) = 
@@ -145,12 +148,14 @@ hsequence (xm : xms) =
        xs <- hsequence[\ys -> ym(x:ys) | ym <- xms]
        return(x : xs)
 
+-- | Identity monad on type x.
 newtype Id x = Id { di :: x} deriving (Show)
  
 instance Monad Id where
     return a     = Id a   
     (Id x) >>= f = f x
 
+-- | Computing Fibonacci numbers using @hsequence@ on type @Id Integer@.
 fibonacci :: [Integer]
 fibonacci = di(hsequence (repeat f))
   where f [ ] = Id 1
