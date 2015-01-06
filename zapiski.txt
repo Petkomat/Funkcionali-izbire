@@ -1,7 +1,38 @@
 Inverz funkcije overline za naravna števila:
+
+newtype Nat = Int neki neki
+
 K x = K x Bool, enako za J x
-f: K Nat -> J Nat ima predpis
+f :: K Nat -> J Nat 
 
-f fi_S = pred -> if fi_S pred then f'(fi_S, pred, 1) else 1
+f fi_S = \pred -> if (fi_S pred) 
+				  then (f' fi_S pred 1)
+				  else (f fi_S (\n -> True))
 
-f' (fi, p, t) = if fi (\n -> p n & n<=t) then t else f'(fi,p,t+1)
+f' fi p t = if fi (\n -> p n && n<=t) 
+				then t 
+				else f'(fi,p,t+1)
+
+
+##################################################################################
+				
+Inverz funkcije overline za Nat -> Nat:
+g:: K Baire -> J Baire
+
+g fi_S = \pred ->  if (fi_S pred) 
+				   then g' fi_S pred 
+				   else (g fi_S (\x -> True))
+
+enacaj :: Baire -> Baire -> Nat -> Bool
+enacaj a b 0 = True
+enacaj a b n = (a n = b n) && enacaj a b (n-1)
+
+g' :: (K Baire) -> (Baire -> Bool) -> Baire
+g' fi p n = mini fi p n 1
+
+mini fi p n t = if fi (\b -> (enacaj b (g' fi p) (n-1)) && b n == t )
+				then t
+				else mini fi p n (t+1)
+
+				
+#################################################################################
