@@ -1,3 +1,40 @@
+{-|
+Module      : Paper
+Description : Module implementing selection functions.
+Maintainer  : matej.petkovic@student.fmf.uni-lj.si,tomaz.stepisnik@student.fmf.uni-lj.si
+Stability   : beta
+
+Module implements functions and examples described in paper What Sequential Games, 
+the Tychonoff Theorem and the Double-Negation Shift have in Common, 2010, by Martin Escardo.
+-}
+
+module Paper 
+(
+	J,
+	K,
+	overline,
+	find,
+	findnot,
+	forsome,
+	forevery,
+	argsupBool,
+	supBool,
+	findBool,
+	argsup,
+	arginf,
+	otimes,
+	bigotimes,
+	dotimes,
+	dbigotimes,
+	bigunion,
+	mcons,
+	sequence',
+	hsequence,
+	Id,
+	fibonacci
+)
+where
+
 -- | Selection functions on type @x@, where @r@ is a type of generalized truth values.
 type J r x = (x -> r) -> x 
 

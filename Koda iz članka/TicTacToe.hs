@@ -5,6 +5,8 @@
 -- R is the set 3 = {-1,0,1}
 -- assumption: player X starts
 
+import Paper (J,arginf,argsup,dotimes,dbigotimes)
+
 -- | Type of truth values that represent game outcomes.
 type R = Int
 
@@ -43,9 +45,6 @@ outcome O (m : ms) (x, o) =
 p :: [Move] -> R
 p ms = value(outcome X ms ([],[]))
 
--- to bova importala
-type J r x = (x -> r) -> x
-
 -- | List of history depentent selection functions of moves, where n-th selection function returns optimal move on n-th turn.
 epsilons :: [[Move] -> J R Move]
 epsilons = take 9 all
@@ -53,35 +52,9 @@ epsilons = take 9 all
         epsilonX history = argsup ([0..8] `setMinus` history) 
         epsilonO history = arginf ([0..8] `setMinus` history) 
 
--- to bova importala
-argsup, arginf :: [x] -> J Int x
-argsup    []  p = undefined
-argsup (x:xs) p = f xs x (p x)
-  where f    xs  a   1  = a 
-        f    []  a   r  = a
-        f (x:xs) a (-1) = f xs x (p x) 
-        f    xs  a   0  = g xs
-         where g (x:xs) = if p x == 1 then x else g xs
-               g    []  = a
-
--- to tut
-arginf xs p = argsup xs (\x -> - p x)
-
--- to tut
-otimes :: J r x -> (x -> J r [x]) -> J r [x]
-otimes e0 e1 p = a0 : a1
-  where a0 = e0(\x0 -> overline (e1 x0) (\x1 -> p(x0:x1)))
-        a1 = e1 a0 (\x1 -> p(a0 : x1))
-        overline e p = p(e p)
--- to tut
-bigotimes :: [[x] -> J r x] -> J r [x]
-bigotimes [] = \p -> []
-bigotimes (e : es) =  
- e [] `otimes` (\x -> bigotimes[\xs->d(x:xs) | d <- es])
-
 -- | Optimal moves for Tic Tac Toe.
 optimalPlay :: [Move]
-optimalPlay = bigotimes epsilons p
+optimalPlay = dbigotimes epsilons p
 
 -- | Optimal outcome of Tic Tac Toe.
 optimalOutcome :: R
@@ -89,7 +62,7 @@ optimalOutcome = p optimalPlay
 
 -- | Returns an optimal move, given previous moves.
 optimalStrategy :: [Move] -> Move
-optimalStrategy as = head(bigotimes epsilons' p')
+optimalStrategy as = head(dbigotimes epsilons' p')
    where epsilons' = drop (length as) epsilons
          p' xs = p(as ++ xs)
 

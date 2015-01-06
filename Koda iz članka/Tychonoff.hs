@@ -1,24 +1,5 @@
--- to importava
-type J r x = (x -> r) -> x 
-type K r x = (x -> r) -> r
+import Paper (J,K,overline,findBool,otimes,bigotimes)
 
-overline :: J r x -> K r x
-overline e = \p -> p(e p)
-
-
-
-findBool :: J Bool Bool
-findBool p = p True
-
-otimes :: J r x -> J r [x] -> J r [x]
-otimes e0 e1 p = a0 : a1
-  where a0 = e0(\x0 -> overline e1 (\x1 -> p(x0:x1)))
-        a1 = e1(\x1 -> p(a0 : x1))
-
-bigotimes :: [J r x] -> J r [x]
-bigotimes [] = \p -> []
-bigotimes (e:es) = e `otimes` bigotimes es 
--- do sem importava
 
 -- | Selection function on Cantor space.
 findCantor :: J Bool [Bool]
@@ -39,10 +20,10 @@ decode :: [Bool] -> (Integer -> Bool)
 decode xs i | i >= 0    =  xs `at`   (i * 2)
             | otherwise =  xs `at` ((-i * 2) - 1)
 
--- | Call @at xs n@ returns n-th element of a list @xs@.
+-- | Call @at xs n@ returns (n+1)-th element of a list @xs@.
 at :: [x] -> Integer -> x
 at (x:xs) 0 = x
-at (x:xs) (n+1) = at xs n
+at (x:xs) n = at xs (n-1)
 
 -- | Selection function of functions @Integer -> Bool@.
 findFunction :: J Bool (Integer -> Bool)
