@@ -14,7 +14,7 @@ f' fi p t = if fi (\n -> p n && n <= t)
 			then t
 			else f' fi p (t+1)
 			
-
+-- testic p = any p nji
 testfi p = (p 2) || (p 4) || (p 6) || (p 8) || (p 10)
 p11 n = n `mod` 3 == 0
 p12 n = True
