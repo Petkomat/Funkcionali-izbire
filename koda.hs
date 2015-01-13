@@ -77,8 +77,8 @@ d n = \m -> let l = lst n in
 						then 0
 						else l !! m
 
-P :: (Baire -> Nat) -> Baire
-P F = \n -> F (d n)
+pP :: (Baire -> Nat) -> Baire
+pP f = \n -> f (d n)
 
 r :: K Baire -> Baire -> Baire
 r fi a = \n -> if fi (\b -> (prvihN b (r fi a) n) && b n == a n)
@@ -88,8 +88,17 @@ r fi a = \n -> if fi (\b -> (prvihN b (r fi a) n) && b n == a n)
 								  then m
 								  else miniM n (m+1)
 								  
-E :: K Baire -> Baire -> (Baire -> Nat)
-E fi a = \x -> 
+eE :: K (Baire -> Nat) -> Baire -> (Baire -> Nat)
+eE fi a = \x -> miniY x 0 
+			where miniY x y = if fi (\f -> (prvihN (pP f) (r (\p -> fi (p . pP)) a) (miniN x a 0)) && f x == y)
+							  then y
+							  else miniY x (y+1)
+				where miniN x a n = if forall f $ forall g $ prvihN a (P f) (P g) n -> f x = g x
+									then n
+									else miniN x a (n+1)
+							  
+h :: K (Baire -> Nat) -> J (Baire -> Nat)
+h fi p = eE (g (\p -> fi (p . pP)) (p . eE))
 
 
 
