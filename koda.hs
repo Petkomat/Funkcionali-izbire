@@ -1,3 +1,4 @@
+-- izčrpljive in iskalne množice
 type Nat = Int
 type Baire = Nat -> Nat
 type J t = (t -> Bool) -> t
@@ -115,12 +116,44 @@ isciBaire fi p = if (fi p)
 -- prvih 20 lst-ov
 -- [[0],[1],[0,0],[1,0],[2],[3],[2,0],[3,0],[0,1],[1,1],[0,0,0],[1,0,0],
 -- [2,1],[3,1],[2,0,0],[3,0,0],[4],[5],[4,0],[5,0]]
+-- opomba: d0 == d2, ampak je vseen ...
 
 pTest :: Baire -> Bool
 pTest = \f -> (f 0 == 2) && (f 1 == 0)
 
 fiTest :: (Baire -> Bool) -> Bool
 fiTest p = any p (map d [0..5]) -- vrne d_5
+
+
+-- grdi 2:
+-- gosto v Baire -> Nat bo zaporednje
+-- d0 -> 0,  d0 -> 1,  d0 -> 2,  d0 -> 3, d0 -> 4  ...
+-- d1 -> 0,  d1 -> 1,  d1 -> 2,  d1 -> 3  ...
+-- d2 -> 0,  d2 -> 1   ...
+-- d3 -> 0   ...
+-- .
+-- .
+-- .
+
+
+-- izračunamo antidiagonalo, na kateri bo f n, in položaj na njej
+-- 0->(0,0) 2->(1,1) 5->(2,2) ...
+-- 1->(1,0) 4->(2,1) 
+-- 3->(2,0)
+koord :: Nat -> (Nat, Nat)
+koord n = pomo 0
+				where pomo k = if n + 1 <= a
+								then ((a - n) - 1,k - (a - n))
+								else pomo (k + 1)
+									where a =  div (k * (k + 1)) 2
+gostiF :: Nat -> (Baire -> Nat)
+gostiF n = \g -> (pomo g 0) 
+			where pomo g k | k >= n = 0
+			                | ujemanje g k = b -- ujemanje g in d_k na zacetnem segmentu, ki doloca d_k
+						    | otherwise = 0
+							where 
+								(a, b) = koord k
+								ujemanje f j = foldl (&&) True (zipWith (==) (lst j) (map f [0..]))
 
 
 
