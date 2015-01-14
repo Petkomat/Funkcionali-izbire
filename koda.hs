@@ -49,13 +49,14 @@ memog fi p = if fi p
 			where miniT n t = if fi (\b -> (prvihN b g' n) && b n == t && p b)
 							  then t
 							  else miniT n (t+1)
-
+							  
 testFi p = p (\n -> 2*n) || p (\n -> n+1) || p(\n -> 42)
 p21 f = f 3 == 42
 p22 f = f 2 < 4
 p23 f = True
 p24 f = False
 p25 f = f 1 == 1
+
 
 -- Grdi primer
 pair :: Nat -> (Nat,Nat)
@@ -88,18 +89,38 @@ r fi a = \n -> if fi (\b -> (prvihN b (r fi a) n) && b n == a n)
 								  then m
 								  else miniM n (m+1)
 								  
-eE :: K (Baire -> Nat) -> Baire -> (Baire -> Nat)
-eE fi a = \x -> miniY x 0 
-			where miniY x y = if fi (\f -> (prvihN (pP f) (r (\p -> fi (p . pP)) a) (miniN x a 0)) && f x == y)
-							  then y
-							  else miniY x (y+1)
-				where miniN x a n = if forall f $ forall g $ prvihN a (P f) (P g) n -> f x = g x
-									then n
-									else miniN x a (n+1)
+-- eE :: K (Baire -> Nat) -> Baire -> (Baire -> Nat)
+-- eE fi a = \x -> miniY x 0 
+			-- where miniY x y = if fi (\f -> (prvihN (pP f) (r (\p -> fi (p . pP)) a) (miniN x a 0)) && f x == y)
+							  -- then y
+							  -- else miniY x (y+1)
+				-- where miniN x a n = if forall f $ forall g $ prvihN a (P f) (P g) n -> f x = g x
+									-- then n
+									-- else miniN x a (n+1)
 							  
-h :: K (Baire -> Nat) -> J (Baire -> Nat)
-h fi p = eE (g (\p -> fi (p . pP)) (p . eE))
+-- h :: K (Baire -> Nat) -> J (Baire -> Nat)
+-- h fi p = eE (g (\p -> fi (p . pP)) (p . eE))
 
+
+-- drugi poskus finda na Baire:
+-- Imamo gosto zaporednje d_n funkcij na Baire
+
+isciBaire fi p = if (fi p)
+					then pomo p 0
+					else isciBaire fi (\f -> True)
+						where pomo p n = if p (d n)
+											then d n
+											else pomo p (n + 1)
+
+-- prvih 20 lst-ov
+-- [[0],[1],[0,0],[1,0],[2],[3],[2,0],[3,0],[0,1],[1,1],[0,0,0],[1,0,0],
+-- [2,1],[3,1],[2,0,0],[3,0,0],[4],[5],[4,0],[5,0]]
+
+pTest :: Baire -> Bool
+pTest = \f -> (f 0 == 2) && (f 1 == 0)
+
+fiTest :: (Baire -> Bool) -> Bool
+fiTest p = any p (map d [0..5]) -- vrne d_5
 
 
 
