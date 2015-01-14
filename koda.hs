@@ -125,36 +125,33 @@ fiTest :: (Baire -> Bool) -> Bool
 fiTest p = any p (map d [0..5]) -- vrne d_5
 
 
--- grdi 2:
--- gosto v Baire -> Nat bo zaporednje
--- d0 -> 0,  d0 -> 1,  d0 -> 2,  d0 -> 3, d0 -> 4  ...
--- d1 -> 0,  d1 -> 1,  d1 -> 2,  d1 -> 3  ...
--- d2 -> 0,  d2 -> 1   ...
--- d3 -> 0   ...
--- .
--- .
--- .
+-- tezak primer 2:
 
+-- ce je d gosto zaporednje tipa Baire, potem gosto zaporedje {F_n} tipa Baire -> Nat konstruiramo tako:
+-- Fn (g) = 1. najdi ii =  argmin g =_M d_i, 0 <= i <= n, kjer je M = max(length lst i)
+--			2. ce ii obstaja, vrni (d n) !! ii sicer 0
 
--- izračunamo antidiagonalo, na kateri bo f n, in položaj na njej
--- 0->(0,0) 2->(1,1) 5->(2,2) ...
--- 1->(1,0) 4->(2,1) 
--- 3->(2,0)
-koord :: Nat -> (Nat, Nat)
-koord n = pomo 0
-				where pomo k = if n + 1 <= a
-								then ((a - n) - 1,k - (a - n))
-								else pomo (k + 1)
-									where a =  div (k * (k + 1)) 2
+maksiDolz :: Nat -> Nat
+maksiDolz n = if n == 0
+				then length $ lst 0
+				else max (maksiDolz (n-1)) (length $ lst n)
+				
 gostiF :: Nat -> (Baire -> Nat)
 gostiF n = \g -> (pomo g 0) 
-			where pomo g k | k >= n = 0
-			                | ujemanje g k = b -- ujemanje g in d_k na zacetnem segmentu, ki doloca d_k
-						    | otherwise = 0
-							where 
-								(a, b) = koord k
-								ujemanje f j = foldl (&&) True (zipWith (==) (lst j) (map f [0..]))
+			where pomo g k | k > n = 0
+						   | k <= n && (foldl (&&) True (zipWith (==) (map (d k) [0..dolz]) (map g [0..]))) = d n k -- ker je lst ravno bijekcija Nat -> končni [Nat], bo d n k ok vrednost
+						   | otherwise = pomo g (k+1)
+						   where dolz = (maksiDolz n) - 1
+						   
+-- stestirano gostiF: na majhnih ok, tudi na n = 142 (lst n = [3, 1, 1])
 
+isciNNN fi p = if (fi p)
+					then pomo p 0
+					else isciNNN fi (\f -> True)
+						where pomo p n = if p (gostiF n)
+											then gostiF n
+											else pomo p (n + 1)
+											
 
 
 
