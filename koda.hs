@@ -141,26 +141,46 @@ p33 = \fF -> fF (\n -> 1) == 1
 -- Fn (g) = 1. najdi ii =  argmin g =_M d_i, 0 <= i <= n, kjer je M = max(length lst i)
 --			2. ce ii obstaja, vrni (d n) !! ii sicer 0
 
--- maksiDolz :: Nat -> Nat
--- maksiDolz n = if n == 0
-			  -- then length $ lst 0
-			  -- else max (maksiDolz (n-1)) (length $ lst n)
+maksiDolz :: Nat -> Nat
+maksiDolz n = if n == 0
+			  then length $ lst 0
+			  else max (maksiDolz (n-1)) (length $ lst n)
 				
--- gostiF :: Nat -> (Baire -> Nat)
--- gostiF n = \g -> (pomo g 0) 
-			-- where pomo g k | k > n = 0
-						   -- | k <= n && (foldl (&&) True (zipWith (==) (map (d k) [0..dolz]) (map g [0..]))) = d n k -- ker je lst ravno bijekcija Nat -> končni [Nat], bo d n k ok vrednost
-						   -- | otherwise = pomo g (k+1)
-						   -- where dolz = (maksiDolz n) - 1
-						   
+gostiF :: Nat -> (Baire -> Nat)
+gostiF n = \g -> (pomo g 0) 
+			where pomo g k | k > n = 0
+						   | k <= n && (foldl (&&) True (zipWith (==) (map (d k) [0..dolz]) (map g [0..]))) = d n k -- ker je lst ravno bijekcija Nat -> končni [Nat], bo d n k ok vrednost
+						   | otherwise = pomo g (k+1)
+						   where dolz = (maksiDolz n) - 1						   
 -- stestirano gostiF: na majhnih ok, tudi na n = 142 (lst n = [3, 1, 1])
 
--- isciNNN fi p = \a -> if (fi p)
-				     -- then pomo 0
-				     -- else isciNNN fi (\f -> True)
-						-- where pomo n = if p (gostiF n)
-									   -- then gostiF n
-									   -- else pomo p (n + 1)
+minN :: (Nat -> Bool) -> Nat
+minN p = pomozna 0
+			where pomozna n = if p n then n else pomozna (n+1)
+			
+ujemanje :: (Baire -> Nat) -> (Baire -> Nat) -> Nat -> Bool
+ujemanje h1 h2 j = if j == 0
+				   then True
+				   else (ujemanje h1 h2 (j-1)) && (h1 (d (j - 1)) == h2 (d (j - 1)))
+
+implik :: Bool -> Bool -> Bool
+implik b1 b2 = b2 || not b1
+
+-- isciPoGostem: alternativa za isciNNN. Postopek: naj bo G = isciPoGostem fi p.
+-- Potem je G(a) = (gostiF m) a za tisti gostiF m (F_m), za katerega velja, da 
+-- je m najmanjse naravno stevilo, pri katerem je izpolnjen pogoj:
+	-- obstaja H v K, tako da velja: p H && H a == F_m a && H se ujema z F_m na d0, ... d_(n-1), kjer je 
+	-- n najmanjse stevilo, da velja:
+	-- za vse h1 in h2 iz K: (h1 se s h2 ujema na d0, ... , d_(n-1)) ==> h1 a = h2 a)
+
+isciPoGostemNNN :: K (Baire -> Nat) -> ((Baire -> Nat) -> Bool) -> (Baire -> Nat)
+isciPoGostemNNN fi p = gG
+				where
+					gG a = (gostiF m) a
+						where
+							forall pred = not (fi (\x -> not (pred x)))
+							n = minN (\j -> forall (\h1 -> forall (\h2 -> implik (ujemanje h1 h2 j) (h1 a == h2 a))))
+							m = minN (\j -> fi (\hH -> (ujemanje hH (gostiF j) n) && hH a == (gostiF j) a && p hH))
 												
 
 
