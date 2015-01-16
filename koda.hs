@@ -136,53 +136,60 @@ p33 = \fF -> fF (\n -> 1) == 1
 
 
 -- tezak primer 2:
-
--- ce je d gosto zaporednje tipa Baire, potem gosto zaporedje {F_n} tipa Baire -> Nat konstruiramo tako:
--- Fn (g) = 1. najdi ii =  argmin g =_M d_i, 0 <= i <= n, kjer je M = max(length lst i)
---			2. ce ii obstaja, vrni (d n) !! ii sicer 0
-
-maksiDolz :: Nat -> Nat
-maksiDolz n = if n == 0
-			  then length $ lst 0
-			  else max (maksiDolz (n-1)) (length $ lst n)
-				
-gostiF :: Nat -> (Baire -> Nat)
-gostiF n = \g -> (pomo g 0) 
-			where pomo g k | k > n = 0
-						   | k <= n && (foldl (&&) True (zipWith (==) (map (d k) [0..dolz]) (map g [0..]))) = d n k -- ker je lst ravno bijekcija Nat -> končni [Nat], bo d n k ok vrednost
-						   | otherwise = pomo g (k+1)
-						   where dolz = (maksiDolz n) - 1						   
--- stestirano gostiF: na majhnih ok, tudi na n = 142 (lst n = [3, 1, 1])
-
 minN :: (Nat -> Bool) -> Nat
 minN p = pomozna 0
 			where pomozna n = if p n then n else pomozna (n+1)
 			
-ujemanje :: (Baire -> Nat) -> (Baire -> Nat) -> Nat -> Bool
-ujemanje h1 h2 j = if j == 0
-				   then True
-				   else (ujemanje h1 h2 (j-1)) && (h1 (d (j - 1)) == h2 (d (j - 1)))
+ujemanje :: Baire -> Baire -> Nat -> Bool
+ujemanje f1 f2 j = j == 0 || (f1 (j - 1) == f2 (j - 1) && ujemanje f1 f2 (j - 1))
+-- gostiF_n si mislimo tako: lst n = [3 4 0 1 0 1 3 422] ... gostiF_n = [lst 3, lst 4, lst 0, ... , lst 422]
+gostiF :: Nat -> (Baire -> Nat)
+gostiF n = \g -> pomo g 0
+					where
+						sez = lst n
+						dol = length sez
+						pomo g k | k >= dol                  =  0
+								 | ujemanje g (d ind) dolK   =  k
+								 | otherwise                 =  pomo g (k + 1)
+								 where
+									ind = sez !! k
+									dolK = length $ lst $ ind
+									
 
-implik :: Bool -> Bool -> Bool
-implik b1 b2 = b2 || not b1
+
+
+		
 
 -- isciPoGostem: alternativa za isciNNN. Postopek: naj bo G = isciPoGostem fi p.
--- Potem je G(a) = (gostiF m) a za tisti gostiF m (F_m), za katerega velja, da 
--- je m najmanjse naravno stevilo, pri katerem je izpolnjen pogoj:
-	-- obstaja H v K, tako da velja: p H && H a == F_m a && H se ujema z F_m na d0, ... d_(n-1), kjer je 
-	-- n najmanjse stevilo, da velja:
-	-- za vse h1 in h2 iz K: (h1 se s h2 ujema na d0, ... , d_(n-1)) ==> h1 a = h2 a)
+-- Potem je G(a) = (gostiF m) a za najmanjse naravno stevilo m, za katerega velja:
+	-- obstaja H v K, tako da velja: p H && H a == F_m a && H =n G, kjer je
+	-- n najmanjse naravno stevilo, da velja:
+			-- za vse H1, H2 iz K: če H1 =n H2, potem H1 a == H2 a.
+-- Dokaz pravilnosti:
+-- G iz K: denimo, da ni. Potem obstajajo H1, H2, a1, a2:
+          -- G(ai) =  Hi(ai) in H1(ai) != H2(ai)
+		  -- i = 1: a1 pripada n1 => H2 !=n1 G =n1 H => H2 !=n1 H1 ... obstaja k < n1: H1(dk) != H2(dk)
+		  -- i = 2: .... n2 => H1 !=n2 G =n2 H2 => n2 > n1 in n2 < n1. -><-
+-- tudi m obstaja.
 
 isciPoGostemNNN :: K (Baire -> Nat) -> ((Baire -> Nat) -> Bool) -> (Baire -> Nat)
-isciPoGostemNNN fi p = gG
-				where
-					gG a = (gostiF m) a
+isciPoGostemNNN fi p = if fi p
+					   then gG
+					   else isciPoGostemNNN fi (\f -> True)
 						where
-							forall pred = not (fi (\x -> not (pred x)))
-							n = minN (\j -> forall (\h1 -> forall (\h2 -> implik (ujemanje h1 h2 j) (h1 a == h2 a))))
-							m = minN (\j -> fi (\hH -> (ujemanje hH (gostiF j) n) && hH a == (gostiF j) a && p hH))
-												
-
+							gG a = (gostiF m) a
+								where
+									forall pred = not (fi (\x -> not (pred x)))
+									impli b1 b2 = not b1 || b2
+									pomo h1 h2 j = j == 0 || (h1 (d (j - 1)) == h2 (d (j - 1)) && pomo h1 h2 (j - 1))
+									n = minN(\j -> (forall (\h1 -> forall (\h2 -> not (pomo h1 h2 j) || h1 a == h2 a ))))
+									m = minN (\j -> fi (\hH -> p hH && hH a == gostiF j a && pomo hH gG j))
+									
+fi2 :: ((Baire -> Nat) -> Bool) -> Bool 
+fi2 p = p (\f ->  f(f 0)) || p (\f -> f(f 1))
+pre :: (Baire -> Nat) -> Bool
+pre = \fF -> fF (\n ->  if n == 2 then 1 else 0) == 1
+							
 
 
 
