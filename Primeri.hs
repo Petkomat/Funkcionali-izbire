@@ -25,3 +25,20 @@ p31,p32,p33 :: (Baire -> Nat) -> Bool
 p31 = \fF -> fF (\n -> 1) == 0
 p32 = \fF -> fF (\n -> 1) == 2
 p33 = \fF -> fF (\n -> 1) == 1
+
+
+findBit :: (Nat -> Bool) -> Nat
+findBit p = if p 0 then 0 else 1
+branch :: Nat -> Baire -> Baire -> Baire
+branch x l r n | n == 0 = x
+               | odd n = l ((n-1) `div` 2)
+               | otherwise = r ((n-2) `div` 2)
+find :: (Baire -> Bool) -> Baire
+find p = branch x l r
+    where x = findBit(\x -> forsome(\l -> forsome(\r -> p(branch x l r))))
+          l = find(\l -> forsome(\r -> p(branch x l r)))
+          r = find(\r -> p(branch x l r))
+          forsome p = p(find(\a -> p a))
+
+fiCantor :: K Baire
+fiCantor p = p (find p)
