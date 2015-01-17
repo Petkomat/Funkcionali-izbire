@@ -1,4 +1,3 @@
--- izčrpljive in iskalne množice
 type Nat = Int
 type Baire = Nat -> Nat
 type J t = (t -> Bool) -> t
@@ -145,9 +144,9 @@ gostiF n = \g -> pomo g 0
 					where
 						sez = lst n
 						dol = length sez
-						pomo g k | k >= dol                  =  0
-								 | vsajEn g (lst ind)   	 =  k
-								 | otherwise                 =  pomo g (k + 1)
+						pomo g k | k >= dol           =  0
+								 | vsajEn g (lst ind) =  k
+								 | otherwise          =  pomo g (k + 1)
 								 where
 									ind = sez !! k
 									dolK = length $ lst $ ind
