@@ -107,7 +107,7 @@ h fi p = eE fi f'
 	where f' = g (\p -> fi (p . pP)) (\y -> p (eE fi y))
 
 fiNNN :: ((Baire -> Nat) -> Bool) -> Bool 
-fiNNN p = p (\f -> 0) || p (\f -> f 1)
+fiNNN p = p (\f -> f 0) || p (\f -> f 1)
 p31,p32,p33 :: (Baire -> Nat) -> Bool
 p31 = \fF -> fF (\n -> 1) == 0
 p32 = \fF -> fF (\n -> 1) == 2
@@ -123,11 +123,6 @@ p33 = \fF -> fF (\n -> 1) == 1
 									 -- then d n
 									 -- else pomo p (n + 1)
 
--- prvih 20 lst-ov
--- [[0],[1],[0,0],[1,0],[2],[3],[2,0],[3,0],[0,1],[1,1],[0,0,0],[1,0,0],
--- [2,1],[3,1],[2,0,0],[3,0,0],[4],[5],[4,0],[5,0]]
--- opomba: d0 == d2, ampak je vseen ...
-
 -- pTest :: Baire -> Bool
 -- pTest = \f -> (f 0 == 2) && (f 1 == 0)
 
@@ -142,67 +137,43 @@ minN p = pomozna 0
 			
 ujemanje :: Baire -> Baire -> Nat -> Bool
 ujemanje f1 f2 j = j == 0 || (f1 (j - 1) == f2 (j - 1) && ujemanje f1 f2 (j - 1))
--- gostiF_n si mislimo tako: lst n = [3 4 0 1 0 1 3 422] ... gostiF_n = [lst 3, lst 4, lst 0, ... , lst 422]
+-- gostiF_n si mislimo tako: lst n = [3 4 0 1 0 1 3 422] ... gostiF_n = [lst 3 = [1 22 3], lst 4 = [1 0], lst 0, ... , lst 422]
+														-- če se g ujema z vsaj enim od d1, d22, d3: vrni 0
+														-- če se g ...                  d1, d0: vrni 1 ...
 gostiF :: Nat -> (Baire -> Nat)
 gostiF n = \g -> pomo g 0
 					where
 						sez = lst n
 						dol = length sez
 						pomo g k | k >= dol                  =  0
-								 | ujemanje g (d ind) dolK   =  k
+								 | vsajEn g (lst ind)   	 =  k
 								 | otherwise                 =  pomo g (k + 1)
 								 where
 									ind = sez !! k
 									dolK = length $ lst $ ind
+									vsajEn f1 kandi | length kandi == 0  = False
+													| otherwise          = (ujemanje f1 dPrvi kolk) || vsajEn f1 (tail kandi)
+													where
+														dPrvi = d (kandi !! 0)
+														kolk = length $ lst (kandi !! 0)
 									
 
-
-
-		
-
--- isciPoGostem: alternativa za isciNNN. Postopek: naj bo G = isciPoGostem fi p.
--- Potem je G(a) = (gostiF m) a za najmanjse naravno stevilo m, za katerega velja:
-	-- obstaja H v K, tako da velja: p H && H a == F_m a && H =n G, kjer je
-	-- n najmanjse naravno stevilo, da velja:
-			-- za vse H1, H2 iz K: če H1 =n H2, potem H1 a == H2 a.
--- Dokaz pravilnosti:
--- G iz K: denimo, da ni. Potem obstajajo H1, H2, a1, a2:
-          -- G(ai) =  Hi(ai) in H1(ai) != H2(ai)
-		  -- i = 1: a1 pripada n1 => H2 !=n1 G =n1 H => H2 !=n1 H1 ... obstaja k < n1: H1(dk) != H2(dk)
-		  -- i = 2: .... n2 => H1 !=n2 G =n2 H2 => n2 > n1 in n2 < n1. -><-
--- tudi m obstaja.
-
-isciPoGostemNNN :: K (Baire -> Nat) -> ((Baire -> Nat) -> Bool) -> (Baire -> Nat)
-isciPoGostemNNN fi p = if fi p
+isci2NNN :: K (Baire -> Nat) -> ((Baire -> Nat) -> Bool) -> (Baire -> Nat)
+isci2NNN fi p = if fi p
 					   then gG
-					   else isciPoGostemNNN fi (\f -> True)
+					   else isci2NNN fi (\f -> True)
 						where
-							gG a = (gostiF m) a
+							gG a = slikajGoste n
 								where
 									forall pred = not (fi (\x -> not (pred x)))
-									impli b1 b2 = not b1 || b2
-									pomo h1 h2 j = j == 0 || (h1 (d (j - 1)) == h2 (d (j - 1)) && pomo h1 h2 (j - 1))
-									n = minN(\j -> (forall (\h1 -> forall (\h2 -> not (pomo h1 h2 j) || h1 a == h2 a ))))
-									m = minN (\j -> fi (\hH -> p hH && hH a == gostiF j a && pomo hH gG j))
+									n = minN (\j -> (forall (\hH -> hH (d j) == hH a))) -- tak n obstaja
+									pomo h1 j = j == 0 || (h1 (d (j - 1)) == slikajGoste (j - 1) && pomo h1 (j - 1)) -- ujemanje na prvih j d_i-jih
+									slikajGoste = (map slikaj [0..] !!)
+										where slikaj m = minN (\j -> fi (\hH -> (pomo hH m) && hH (d m) == j && p hH)) -- preslikamo gosto zap. d_n
 									
 fi2 :: ((Baire -> Nat) -> Bool) -> Bool 
-fi2 p = p (\f ->  f(f 0)) || p (\f -> f(f 1))
+fi2 p = p (\f ->  (f 1)) || p (\f -> (f 0))
 pre :: (Baire -> Nat) -> Bool
-pre = \fF -> fF (\n ->  if n == 2 then 1 else 0) == 1
+pre = \fF -> fF (\n ->  n) == 1
 							
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
