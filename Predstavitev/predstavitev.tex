@@ -1,0 +1,136 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc} % ÄąË‡umniki
+\usepackage[slovene]{babel} % preklopimo na slovenÄąË‡Ă„Ĺ¤ino
+\usepackage{amsmath}
+\usepackage{amsfonts}
+%\usepackage{theorem}
+\usepackage{amsthm}
+
+\usetheme{Warsaw}
+
+\useoutertheme{infolines}
+\author[Sintektična sladkorčka]{Tomaž Stepišnik Perdih\\  Matej Petković}
+
+%\institute[]{FMF}
+\title{Izbire}
+\date{{22. januar 2015}}
+%\institute[]{}
+
+\newtheorem{defin}{Definicija}
+\newtheorem{trd}{Trditev}
+\newtheorem{izrek}{Izrek}
+\newtheorem{dok}{Dokaz}
+\newtheorem{posl}{Posledica}
+\newtheorem{lema}{Lema}
+\newtheorem{prim}{Primer}
+\def\Rn{\mathbb{R}^n}
+\def\izo{\approx}
+\def\eps{\varepsilon}
+\def\obs{\exists}
+\def\fora{\forall}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\df}{\operatorname{df}}
+
+\begin{document}
+
+\begin{frame}
+\titlepage 
+\end{frame}
+
+\begin{frame}{Uvodni pojmi}
+Imejmo neprazno množico $A$, v kateri so elementi tipa \texttt{a}  in množico logičnih vrednosti $R =  \{ \texttt{true}, \texttt{false}\} $. Definiramo lahko
+\begin{itemize}
+\item predikate\; $p$\texttt{ :: a -> R}
+\item kvantifikatorje\; $\phi$\texttt{ :: (a -> R) -> R}
+\item izbire $\varepsilon$\texttt{ :: (a -> R) -> a}
+\end{itemize}
+
+\begin{prim}
+Naj bo $A = \{1,2,3,4\}$, $\phi = \exists_A$, $p_1 = n \to n > 3$ in $p_2 = n\to n > 4$. Potem je
+$$\phi(p_1) = \text{true}\quad\varepsilon (p_1) = 4\quad\text{in}\quad\phi(p_2) = \text{false}\quad\varepsilon (p_2) = \text{?!}$$
+\end{prim}
+
+\end{frame}
+
+\begin{frame}{Izbira natančneje}
+\begin{defin}
+Imejmo neprazno množico $A$ in kvantifikator $\phi$ na njej. Funkcija $\eps: p \to a_p\in A$ je izbira, če za vsak predikat $p$ velja
+$$\phi (p)\Longrightarrow p(a_p)$$
+\end{defin}
+
+\begin{prim}
+Naj bo $A = \{1,2,3,4\}$ in $\phi = \exists_A$. Potem je s predpisom
+$$\eps (p) =
+\begin{cases}
+\min \{ n \in A \mid p(A) \} ;& \phi(p)\\
+\hphantom{oooooooooioooo}1\, ;& sicer
+\end{cases}
+$$
+definirana izbira na množici $A$. Torej je $\eps (n \to n > 4) = 1$.
+\end{prim}
+
+\end{frame}
+
+\begin{frame}{Križci in krožci}
+Bine in Bane igrata križce in krožce. Označimo z $A_n$ množico možnih potez pred $n$-to potezo, $1\leq n\leq 9$.
+Označimo Binetove poteze z $x_i$, Banetove pa z $y_i$. Denimo, da začne Bine.  Zanima ga, ali velja
+$$\obs x_1\in A_1.\fora y_2 \in A_2. \obs x_3\in A_3.\fora y_4 \cdots \obs x_9 \in A_9. \operatorname{zmaga}_\text{BINE}(x_1,y_2,\dots, y_8,x_9) \text{,}$$
+\pause
+kar lahko, če Binetovo zmago označimo z $1$, Banetovo z $-1$ ter izenačenje z $0$, prepišemo v
+
+$$\max_{x_1}. \min_{y_2}. \cdots \max_{x_9}. \operatorname{vrednost}(x_1, y_2,\dots, y_8, x_9) = 1\text{.}$$
+
+\begin{prim}
+Tudi $\min$ in $\max$ sta kvantifikatorja tipa \texttt{(poteze -> R) -> R} za $R = \{-1, 0, 1\}$.
+\end{prim}
+
+\end{frame}
+
+
+
+\begin{frame}{Primeri}
+
+	
+\begin{columns}
+\begin{column}{.48\textwidth}
+%\color{red}\rule{\linewidth}{4pt}
+
+	Nekaj znanih realnih algeber z deljenjem:
+	\begin{itemize}
+	\item  realna števila $\mathbb{R}$
+	\item  kompleksna števila $\mathbb{C}$
+	\item  kvaternioni $\mathbb{H}$
+	\item  oktonioni $\mathbb{O}$	
+	\end{itemize}
+
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+%\color{blue}\rule{\linewidth}{4pt}
+
+%\begin{figure}
+%\includegraphics[scale = 0.20]{FanoMnemonic.png}
+%
+%\caption{Množenje oktonionov
+%
+%\label{fig:figure}}
+%\end{figure}
+
+
+\end{column}%
+\end{columns}	
+	
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
