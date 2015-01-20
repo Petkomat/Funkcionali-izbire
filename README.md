@@ -1,6 +1,6 @@
 #Funkcije izbire
 
-###Avtorja: Matej Petkovič, Tomaž Stepišnik Perdih (Ekipa Sintaktična sladkorčka)
+#####Avtorja: Matej Petkovič, Tomaž Stepišnik Perdih
 
 
 Repozitorij za projekt Funkcije izbire (Matematika s funkcijskim programiranjem)
