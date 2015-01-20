@@ -1,3 +1,12 @@
+{-|
+Module      : Paper
+Description : Module implementing selection functions.
+Maintainer  : matej.petkovic@student.fmf.uni-lj.si,tomaz.stepisnik@student.fmf.uni-lj.si
+Stability   : beta
+
+Module implements functions and examples described in paper What Sequential Games, 
+the Tychonoff Theorem and the Double-Negation Shift have in Common, 2010, by Martin Escardo.
+-}
 module Izbire
 (
     Nat,
