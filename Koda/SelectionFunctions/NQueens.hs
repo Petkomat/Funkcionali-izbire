@@ -1,4 +1,17 @@
-import Paper (J,find,dotimes,dbigotimes)
+{-|
+Module      : NQueens
+Description : Finding optimal strategy for NQueens game.
+Maintainer  : matej.petkovic@student.fmf.uni-lj.si,tomaz.stepisnik@student.fmf.uni-lj.si
+Stability   : beta
+
+We have a N x N chess board. Two players take turns placing queens on the board. On i-th turn a queen must be placed in i-th column so that previously placed queens are not attacking it.
+This module can be used to calculate optimal moves using selection functions implemented as described in paper What Sequential Games, 
+the Tychonoff Theorem and the Double-Negation Shift have in Common, 2010, by Martin Escardo.
+-}
+module SelectionFunctions.NQueens
+where
+
+import SelectionFunctions.Paper (J,find,dotimes,dbigotimes)
 
 -- | Board size.
 n = 8
@@ -61,7 +74,7 @@ setMinus xs [] = xs
 setMinus xs (y : ys) = setMinus (delete y xs) ys
 
 
-main = 
-  putStr ("An optimal play for " ++ show n ++  "-Queens is "
-  ++ show optimalPlay ++ "\nand the optimal outcome is " 
-  ++ show optimalOutcome ++ "\n")
+-- main = 
+  -- putStr ("An optimal play for " ++ show n ++  "-Queens is "
+  -- ++ show optimalPlay ++ "\nand the optimal outcome is " 
+  -- ++ show optimalOutcome ++ "\n")

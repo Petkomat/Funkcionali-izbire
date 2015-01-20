@@ -1,13 +1,38 @@
-import Izbire (K,Nat,Baire,isciN,isciNN,isciNNN,memoNN)
 {-|
-Module      : Paper
-Description : Module implementing selection functions.
+Module      : Examples
+Description : Module for testing selection functions from module SelectionFunctions 
 Maintainer  : matej.petkovic@student.fmf.uni-lj.si,tomaz.stepisnik@student.fmf.uni-lj.si
 Stability   : beta
 
-Module implements functions and examples described in paper What Sequential Games, 
-the Tychonoff Theorem and the Double-Negation Shift have in Common, 2010, by Martin Escardo.
+Existential quantifier for Cantor space was defined with help from this blog post by Martin Escardo http://math.andrej.com/2007/09/28/seemingly-impossible-functional-programs/
 -}
+module SelectionFunctions.Examples
+(
+	-- * Examples for @Nat@
+	fiN,
+	p11,
+	p12,
+	p13,
+	p14,
+	-- * Examples for @Baire@
+	fiNN,
+	fiCantor,
+	p21,
+	p22,
+	p23,
+	p24,
+	p25,
+	-- * Exapmles for @Baire -> Nat@
+	fiNNN,
+	fiImage,
+	p31,
+	p32,
+	p33,
+	p34
+)
+where
+
+import SelectionFunctions.Selections (K,Nat,Baire,findN,findNN,findNNN,memoNN)
 
 -- | Existential quantifier for set {2,4,6,8,10}.
 fiN :: K Nat
@@ -64,7 +89,7 @@ image :: Baire -> (Baire -> Nat)
 image c = \f -> sum (zipWith (*) (map c [0..(f 2)]) (map f [0..(f 2)]))
 
 -- | Existential quantifier for continuous image of Cantor space in Baire -> Nat. 
-fiSlika :: K (Baire -> Nat)
-fiSlika p = fiCantor (p . image)
+fiImage :: K (Baire -> Nat)
+fiImage p = fiCantor (p . image)
 
 

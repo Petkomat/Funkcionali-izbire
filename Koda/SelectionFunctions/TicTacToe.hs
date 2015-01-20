@@ -1,11 +1,26 @@
--- The board and moves are
---                                    012
---                                    345
---                                    678
--- R is the set 3 = {-1,0,1}
--- assumption: player X starts
+{-|
+Module      : TicTacToe
+Description : Finding optimal strategy for a game of TicTacToe.
+Maintainer  : matej.petkovic@student.fmf.uni-lj.si,tomaz.stepisnik@student.fmf.uni-lj.si
+Stability   : beta
 
-import Paper (J,arginf,argsup,dotimes,dbigotimes)
+The board and moves are
+	0 1 2
+	3 4 5
+	6 7 8
+R is the set 3 = (-1,0,1)
+assumption: player X starts
+
+This module can be used to calculate optimal moves using selection functions implemented as described in paper What Sequential Games, 
+the Tychonoff Theorem and the Double-Negation Shift have in Common, 2010, by Martin Escardo.
+-}
+
+module SelectionFunctions.TicTacToe
+where
+
+
+
+import SelectionFunctions.Paper (J,arginf,argsup,dotimes,dbigotimes)
 
 -- | Type of truth values that represent game outcomes.
 type R = Int
@@ -41,7 +56,7 @@ outcome X (m : ms) (x, o) =
 outcome O (m : ms) (x, o) = 
   if wins x then (x, o) else outcome X ms (x, insert m o)
 
- -- | Predicate on lists of moves, that computes outcome of a game given a sequence of moves.
+-- | Predicate on lists of moves, that computes outcome of a game given a sequence of moves.
 p :: [Move] -> R
 p ms = value(outcome X ms ([],[]))
 
@@ -103,7 +118,7 @@ setMinus xs [] = xs
 setMinus xs (y : ys) = setMinus (delete y xs) ys
 
 
-main :: IO ()
-main = putStr ("An optimal play for Tic-Tac-Toe is "
-             ++ show optimalPlay
-             ++ "\nand the optimal outcome is " ++ show optimalOutcome ++ "\n")
+-- main :: IO ()
+-- main = putStr ("An optimal play for Tic-Tac-Toe is "
+             -- ++ show optimalPlay
+             -- ++ "\nand the optimal outcome is " ++ show optimalOutcome ++ "\n")

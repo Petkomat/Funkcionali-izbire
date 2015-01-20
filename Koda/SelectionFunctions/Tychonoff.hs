@@ -1,4 +1,16 @@
-import Paper (J,K,overline,findBool,otimes,bigotimes)
+{-|
+Module      : Tychonoff
+Description : Tychonoff theorem at work.
+Maintainer  : matej.petkovic@student.fmf.uni-lj.si,tomaz.stepisnik@student.fmf.uni-lj.si
+Stability   : beta
+
+In this module we define a selection function on a product of compact spaces with selection functions, which is also compact according to Tychonoff theorem.
+Code is described in paper What Sequential Games, the Tychonoff Theorem and the Double-Negation Shift have in Common, 2010, by Martin Escardo.
+-}
+module SelectionFunctions.Tychonoff
+where
+
+import SelectionFunctions.Paper (J,K,overline,findBool,otimes,bigotimes)
 
 
 -- | Selection function on Cantor space.

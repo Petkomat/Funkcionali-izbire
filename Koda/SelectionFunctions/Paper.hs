@@ -8,7 +8,7 @@ Module implements functions and examples described in paper What Sequential Game
 the Tychonoff Theorem and the Double-Negation Shift have in Common, 2010, by Martin Escardo.
 -}
 
-module Paper 
+module SelectionFunctions.Paper 
 (
 	J,
 	K,
