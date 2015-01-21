@@ -74,7 +74,7 @@
 \end{frame}
 
 \begin{frame}{Uvodni pojmi}
-Imejmo neprazno množico $A$, v kateri so elementi tipa \texttt{a}  in množico logičnih vrednosti $R =  \{ \texttt{true}, \texttt{false}\} $. Definiramo lahko
+Imejmo neprazno množico $A$, v kateri so elementi tipa \texttt{a}  in množico logičnih vrednosti $r =  \{ \texttt{True}, \texttt{False}\} $. Definiramo lahko
 \begin{itemize}
 \item predikate\; \lstinline!p :: a -> r!
 \item kvantifikatorje\; \lstinline[mathescape]! $\phi$ :: (a -> r) -> r![
@@ -87,11 +87,11 @@ Imejmo neprazno množico $A$, v kateri so elementi tipa \texttt{a}  in množico 
 Naj bo $A = \{1,2,3,4\}$ in $\phi = \exists_A$. Potem je s predpisom
 $$\eps (p) =
 \begin{cases}
-\min \{ n \in A \mid p(A) \} ;& \phi(p)\\
+\min \{ n \in A \mid p(n) \} ;& \phi(p)\\
 \hphantom{oooooooooioooo}1\, ;& sicer
 \end{cases}
 $$
-definirana izbira za eksistenčni kvantifikator za množico $A$. Torej je $\eps (n \to n > 4) = 1$.
+definirana izbira za eksistenčni kvantifikator za množico $A$. Torej je $\eps (n \to n\%2 == 0) = 2$ in $\eps (n \to n > 4) = 1$.
 \end{prim}
 
 \end{frame}
@@ -161,20 +161,21 @@ $$\max_{x_1}. \min_{y_2}. \cdots \max_{x_9}. \operatorname{vrednost}(x_1, y_2,\d
 \begin{frame}[fragile]{Združevanje izbir}%[fragile] zaradi verbatima
 Združevanje izbir se malo zaplete, ker je vsaka poteza odvisna od vseh prejšnjih (tudi prva \smiley).
 Označimo tip potez s \texttt{pot} in tip elementov naše množice $R$ z \texttt{r}.
+\pause
 \begin{lstlisting}
 type J x = (x -> r) -> x
-pomo :: J pot -> (pot -> J [pot]) -> J [pot]
-pomo e0 e1 p = a0 : a1
+krat :: J pot -> (pot -> J [pot]) -> J [pot]
+krat e0 e1 p = a0 : a1
     where
         a0 = e0(\x0 -> preveri (e1 x0) (\x1 -> p (x0 : x1)))
         a1 = e1 a0 (\x1 -> p(a0 : x1))
 \end{lstlisting}
-
+\pause
 \begin{lstlisting}
 prod :: [[x] -> J r x] -> J r [x]
 prod [] = \p -> []
 prod (e : es) =  
-    (e []) `pomo` (\x -> prod (map (\e xs -> e(x:xs)) es))
+    (e []) `krat` (\x -> prod (map (\e xs -> e(x:xs)) es))
 \end{lstlisting}
 \end{frame}
 
