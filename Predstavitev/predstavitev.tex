@@ -115,7 +115,7 @@ Kakšna je izbira za univerzalni kvantifikator?
 
 \begin{frame}[fragile]{Posplošeni predikati}
 
-Denimo, da imamo prodajalno omar. Lahko definiramo predikat, ki vsaki omari določi ceno \lstinline$p :: Omara -> Cena$. 
+%Denimo, da imamo prodajalno omar. Lahko definiramo predikat, ki vsaki omari določi ceno \lstinline$p :: Omara -> Cena$. 
 \begin{itemize}
 \item Najnižjo in najvišjo ceno omare lahko potem najdemo s kvantifikatorjema
 \begin{lstlisting}
@@ -181,7 +181,6 @@ krat e0 e1 p = a0 : a1
    where
       a0 = e0(\x0 -> vrednost $ (e1 x0) (\x1 -> p (x0 : x1)))
       a1 = e1 a0 (\x1 -> p(a0 : x1))
->>>>>>> .merge_file_a01256
 \end{lstlisting}
 \pause
 \begin{lstlisting}
