@@ -10,7 +10,7 @@
 \usetheme{Warsaw}
 
 \useoutertheme{infolines}
-\author[Sintektična sladkorčka]{Tomaž Stepišnik Perdih\\  Matej Petković}
+\author[Sintaktična sladkorčka]{Tomaž Stepišnik Perdih\\  Matej Petković}
 
 %\institute[]{FMF}
 \title{Izbire}
@@ -43,10 +43,12 @@
 \begin{frame}{Uvodni pojmi}
 Imejmo neprazno množico $A$, v kateri so elementi tipa \texttt{a}  in množico logičnih vrednosti $R =  \{ \texttt{true}, \texttt{false}\} $. Definiramo lahko
 \begin{itemize}
-\item predikate\; $p$\texttt{ :: a -> R}
-\item kvantifikatorje\; $\phi$\texttt{ :: (a -> R) -> R}
-\item izbire $\varepsilon$\texttt{ :: (a -> R) -> a}
+\item predikate\; $p$\texttt{ :: a -> r}
+\item kvantifikatorje\; $\phi$\texttt{ :: (a -> r) -> r}
+\item izbire $\varepsilon$\texttt{ :: (a -> r) -> a}
 \end{itemize}
+
+
 
 \begin{prim}
 Naj bo $A = \{1,2,3,4\}$, $\phi = \exists_A$, $p_1 = n \to n > 3$ in $p_2 = n\to n > 4$. Potem je
@@ -60,7 +62,7 @@ $$\phi(p_1) = \text{true}\quad\varepsilon (p_1) = 4\quad\text{in}\quad\phi(p_2) 
 Imejmo neprazno množico $A$. Funkcija $\eps: p \to a_p\in A$ je izbira, če za vsak predikat $p$ velja
 $$\left(\obs a\in A. p(a)\right) \Longrightarrow p(a_p)\text{.}$$
 \end{defin}
-V resnici velja $\left(\obs a\in A. p(a)\right) \Longleftrightarrow p(a_p)$.
+V resnici velja $\left(\obs a\in A. p(a)\right) = p(a_p)$.
 \pause
 \begin{prim}
 Naj bo $A = \{1,2,3,4\}$ in $\phi = \exists_A$. Potem je s predpisom
