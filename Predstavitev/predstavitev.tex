@@ -14,10 +14,10 @@
   basicstyle=\footnotesize,        % the size of the fonts that are used for the code
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
   breaklines=true,                 % sets automatic line breaking
-  captionpos=b,                    % sets the caption-position to bottom
+  %captionpos=b,                    % sets the caption-position to bottom
   %commentstyle=\color{mygreen},    % comment style
-  %deletekeywords={...},            % if you want to delete keywords from the given language
-  %escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  %deletekeywords={},            % if you want to delete keywords from the given language
+  %escapechar=@,          % if you want to add LaTeX within your code
   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
   frame=single,                    % adds a frame around the code
   keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
@@ -63,6 +63,9 @@
 \newcommand{\df}{\operatorname{df}}
 \newcommand{\argmin}{\operatorname{argmin}}
 \newcommand{\argmax}{\operatorname{argmax}}
+\newcommand{\maxi}{\operatorname{maxi}}
+\newcommand{\mini}{\operatorname{mini}}
+
 
 \begin{document}
 
@@ -73,9 +76,9 @@
 \begin{frame}{Uvodni pojmi}
 Imejmo neprazno množico $A$, v kateri so elementi tipa \texttt{a}  in množico logičnih vrednosti $R =  \{ \texttt{true}, \texttt{false}\} $. Definiramo lahko
 \begin{itemize}
-\item predikate\; $p$\texttt{ :: a -> r}
-\item kvantifikatorje\; $\phi$\texttt{ :: (a -> r) -> r}
-\item izbire $\varepsilon$\texttt{ :: (a -> r) -> a}
+\item predikate\; \lstinline!p :: a -> r!
+\item kvantifikatorje\; \lstinline[mathescape]! $\phi$ :: (a -> r) -> r![
+\item izbire\; \lstinline[mathescape]! $\eps$  :: (a -> r) -> a![
 \end{itemize}
 
 \pause
@@ -110,23 +113,30 @@ Kakšna je izbira za univerzalni kvantifikator?
 
 \end{frame}
 
-\begin{frame}{Posplošene "`resnice"'}
+\begin{frame}[fragile]{Posplošeni predikati}
 
-
+Denimo, da imamo prodajalno omar. Lahko definiramo predikat, ki vsaki omari določi ceno \lstinline$p :: Omara -> Cena$. 
+\begin{itemize}
+\item Najnižjo in najvišjo ceno omare lahko potem najdemo s kvantifikatorjema
+\begin{lstlisting}
+maxi,mini :: (Omara -> Cena) -> Cena
+\end{lstlisting}
+\item Najcenejšo in najdražjo omaro pa najdemo z izbirama
+\begin{lstlisting}
+argmin,argmax :: (Omara -> Cena) -> Omara
+\end{lstlisting}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Križci in krožci}
-Bine in Bane igrata križce in krožce. Označimo z $A_n$ množico možnih potez pred $n$-to potezo, $1\leq n\leq 9$.
-Označimo Binetove poteze z $x_i$, Banetove pa z $y_i$. Denimo, da začne Bine.  Zanima ga, ali velja
-$$\obs x_1\in A_1.\fora y_2 \in A_2. \obs x_3\in A_3.\fora y_4 \cdots \obs x_9 \in A_9. \operatorname{zmaga}_\text{BINE}(x_1,y_2,\dots, y_8,x_9) \text{,}$$
+Matej in Tomaž igrata križce in krožce. Označimo z $A_n$ množico prostih polj na $n$-ti potezi, $1\leq n\leq 9$.
+Označimo Matejeve poteze z $x_i$, Tomaževe pa z $y_i$. Denimo, da začne Matej.  Zanima ga, ali velja
+$$\obs x_1\in A_1.\fora y_2 \in A_2. \obs x_3\in A_3.\fora y_4 \cdots \obs x_9 \in A_9. \operatorname{zmaga}_\text{M}(x_1,y_2,\dots, y_8,x_9) \text{,}$$
 \pause
-kar lahko, če Binetovo zmago označimo z $1$, Banetovo z $-1$ ter izenačenje z $0$, prepišemo v
+kar lahko, če Matejevo zmago označimo z $1$, Tomaževo z $-1$ ter izenačenje z $0$, prepišemo v
 
 $$\max_{x_1}. \min_{y_2}. \cdots \max_{x_9}. \operatorname{vrednost}(x_1, y_2,\dots, y_8, x_9) = 1\text{.}$$
 
-\begin{prim}
-Tudi $\min$ in $\max$ sta kvantifikatorja tipa \texttt{(poteze -> R) -> R} za $R = \{-1, 0, 1\}$.
-\end{prim}
 
 \end{frame}
 
