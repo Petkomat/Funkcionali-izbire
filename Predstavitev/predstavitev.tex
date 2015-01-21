@@ -6,6 +6,36 @@
 %\usepackage{theorem}
 \usepackage{amsthm}
 \usepackage{ wasysym }
+\usepackage{listings}
+\usepackage{color}
+\definecolor{viola}{RGB}{236,236,255}
+\lstset{ %
+  backgroundcolor=\color{viola},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  %commentstyle=\color{mygreen},    % comment style
+  %deletekeywords={...},            % if you want to delete keywords from the given language
+  %escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Haskell,                 % the language of the code
+  %morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  %numbersep=5pt,                   % how far the line-numbers are from the code
+  %numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  %rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  %stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  %stringstyle=\color{mymauve},     % string literal style
+  tabsize=4,                       % sets default tabsize to 2 spaces
+  %title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
 
 \usetheme{Warsaw}
 
@@ -20,7 +50,7 @@
 \newtheorem{defin}{Definicija}
 \newtheorem{vpr}{Vprašanji}
 \newtheorem{odg}{Odgovora}
-\newtheorem{dok}{Dokaz}
+\newtheorem{dok}{Vprašanje}
 \newtheorem{posl}{Posledica}
 \newtheorem{koda}{Minuta za Haskell}
 \newtheorem{prim}{Primer}
@@ -48,22 +78,8 @@ Imejmo neprazno množico $A$, v kateri so elementi tipa \texttt{a}  in množico 
 \item izbire $\varepsilon$\texttt{ :: (a -> r) -> a}
 \end{itemize}
 
-
-
-\begin{prim}
-Naj bo $A = \{1,2,3,4\}$, $\phi = \exists_A$, $p_1 = n \to n > 3$ in $p_2 = n\to n > 4$. Potem je
-$$\phi(p_1) = \text{true}\quad\varepsilon (p_1) = 4\quad\text{in}\quad\phi(p_2) = \text{false}\quad\varepsilon (p_2) = \text{?!}$$
-\end{prim}
-
-\end{frame}
-
-\begin{frame}{Izbira natančneje}
-\begin{defin}
-Imejmo neprazno množico $A$. Funkcija $\eps: p \to a_p\in A$ je izbira, če za vsak predikat $p$ velja
-$$\left(\obs a\in A. p(a)\right) \Longrightarrow p(a_p)\text{.}$$
-\end{defin}
-V resnici velja $\left(\obs a\in A. p(a)\right) = p(a_p)$.
 \pause
+
 \begin{prim}
 Naj bo $A = \{1,2,3,4\}$ in $\phi = \exists_A$. Potem je s predpisom
 $$\eps (p) =
@@ -72,25 +88,31 @@ $$\eps (p) =
 \hphantom{oooooooooioooo}1\, ;& sicer
 \end{cases}
 $$
-definirana izbira na množici $A$. Torej je $\eps (n \to n > 4) = 1$.
+definirana izbira za eksistenčni kvantifikator za množico $A$. Torej je $\eps (n \to n > 4) = 1$.
 \end{prim}
 
 \end{frame}
 
 \begin{frame}[fragile]{Izbira splošneje}%[fragile] zaradi verbatima
-\begin{defin}
-Imejmo neprazno množico $A$ in kvantifikator $\phi$ na njej. Funkcija $\eps: p \to a_p\in A$ je izbira, če za vsak predikat $p$ velja
-$$\phi (p) \Longleftrightarrow p(a_p)\text{.}$$
-\end{defin}
 
-Izbira $\eps$ vrne za dani predikat $p$ zgolj kandidata $a_p$ iz množice $A$, za katerega velja $p(a_p)$.
+\begin{dok}
+Kakšna je izbira za univerzalni kvantifikator?
+\end{dok}
+
 \pause
-\begin{koda}
-\begin{verbatim}
-preveri e = \p -> p (e p)
-\end{verbatim}
-\end{koda}
-Funkcija \texttt{preveri} preizkusi kandidata. Opazimo, da preslika izbiro v kvantifikator, ki ji pripada. Obratna smer je težja!
+
+Če je $\eps$ izbira za univerzalni kvantifikator $\phi(p) = \forall x \in A . p(x)$, potem velja:
+\begin{itemize}
+\item $\eps(p) \in A$,
+\item če velja $p(\eps(p))$, potem velja $p(x)$ za vse $x \in A$.
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Posplošene "`resnice"'}
+
+
 \end{frame}
 
 \begin{frame}{Križci in krožci}
@@ -129,29 +151,21 @@ Tudi $\min$ in $\max$ sta kvantifikatorja tipa \texttt{(poteze -> R) -> R} za $R
 \begin{frame}[fragile]{Združevanje izbir}%[fragile] zaradi verbatima
 Združevanje izbir se malo zaplete, ker je vsaka poteza odvisna od vseh prejšnjih (tudi prva \smiley).
 Označimo tip potez s \texttt{pot} in tip elementov naše množice $R$ z \texttt{r}.
-\begin{koda}[produkt izbir $\otimes$]
-\begin{verbatim}
+\begin{lstlisting}
 type J x = (x -> r) -> x
-
-otimes :: J pot -> (pot -> J [pot]) -> J [pot]
-otimes e0 e1 p = a0 : a1
+pomo :: J pot -> (pot -> J [pot]) -> J [pot]
+pomo e0 e1 p = a0 : a1
     where
         a0 = e0(\x0 -> preveri (e1 x0) (\x1 -> p (x0 : x1)))
         a1 = e1 a0 (\x1 -> p(a0 : x1))
-\end{verbatim}
-\end{koda}
+\end{lstlisting}
 
-\end{frame}
-
-
-\begin{frame}[fragile]{Združevanje izbir}
-\begin{koda}[produkt izbir $\bigotimes$]
-\begin{verbatim}
-bigotimes :: [J r pot] -> J r [pot]
-bigotimes [] = \p -> []
-bigotimes (e : es) = e `otimes` bigotimes es
-\end{verbatim}
-\end{koda}
+\begin{lstlisting}
+prod :: [[x] -> J r x] -> J r [x]
+prod [] = \p -> []
+prod (e : es) =  
+    (e []) `pomo` (\x -> prod (map (\e xs -> e(x:xs)) es))
+\end{lstlisting}
 \end{frame}
 
 
