@@ -158,6 +158,17 @@ $$\max_{x_1}. \min_{y_2}. \cdots \max_{x_9}. \operatorname{vrednost}(x_1, y_2,\d
 
 \end{frame}
 
+\begin{frame}{Razmislek prvega igralca}
+Ker igra drugi igralec optimalno, po svoji potezi $x$ pričakujem zase najslabše nadaljevanje igre $\vec{y}$. Zato izračunam vrednosti najslabših nadaljevanj
+
+$$m_x =\min_{\vec{y}} \operatorname{vrednost(x,\vec{y})}$$
+
+ter najdem $$x_{\text{opti}} = \argmax \{m_x\mid x \text{ možna prva poteza} \}\text{.}$$
+
+
+
+\end{frame}
+
 \begin{frame}[fragile]{Združevanje izbir}%[fragile] zaradi verbatima
 Združevanje izbir se malo zaplete, ker je vsaka poteza odvisna od vseh prejšnjih (tudi prva \smiley).
 Označimo tip potez s \texttt{pot} in tip elementov naše množice $R$ z \texttt{r}.
@@ -165,9 +176,9 @@ Označimo tip potez s \texttt{pot} in tip elementov naše množice $R$ z \texttt
 type J x = (x -> r) -> x
 pomo :: J pot -> (pot -> J [pot]) -> J [pot]
 pomo e0 e1 p = a0 : a1
-    where
-        a0 = e0(\x0 -> preveri (e1 x0) (\x1 -> p (x0 : x1)))
-        a1 = e1 a0 (\x1 -> p(a0 : x1))
+   where
+      a0 = e0(\x0 -> vrednost $ (e1 x0) (\x1 -> p (x0 : x1)))
+      a1 = e1 a0 (\x1 -> p(a0 : x1))
 \end{lstlisting}
 
 \begin{lstlisting}
