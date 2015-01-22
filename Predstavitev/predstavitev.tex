@@ -6,6 +6,7 @@
 %\usepackage{theorem}
 \usepackage{amsthm}
 \usepackage{ wasysym }
+\usepackage{upquote}
 \usepackage{listings}
 \usepackage{color}
 \definecolor{viola}{RGB}{236,236,255}
@@ -115,7 +116,7 @@ Kakšna je izbira za univerzalni kvantifikator?
 
 \begin{frame}[fragile]{Posplošeni predikati}
 
-%Denimo, da imamo prodajalno omar. Lahko definiramo predikat, ki vsaki omari določi ceno \lstinline$p :: Omara -> Cena$. 
+Denimo, da imamo prodajalno omar. Lahko definiramo predikat, ki vsaki omari določi ceno \lstinline$p :: Omara -> Cena$. 
 \begin{itemize}
 \item Najnižjo in najvišjo ceno omare lahko potem najdemo s kvantifikatorjema
 \begin{lstlisting}
@@ -131,11 +132,11 @@ argmin,argmax :: (Omara -> Cena) -> Omara
 \begin{frame}{Križci in krožci}
 Matej in Tomaž igrata križce in krožce. Označimo z $A_n$ množico prostih polj na $n$-ti potezi, $1\leq n\leq 9$.
 Označimo Matejeve poteze z $x_i$, Tomaževe pa z $y_i$. Denimo, da začne Matej.  Zanima ga, ali velja
-$$\obs x_1\in A_1.\fora y_2 \in A_2. \obs x_3\in A_3.\fora y_4 \cdots \obs x_9 \in A_9. \operatorname{zmaga}_\text{M}(x_1,y_2,\dots, y_8,x_9) \text{,}$$
+$$\obs x_1\in A_1.\fora y_2 \in A_2. \obs x_3\in A_3.\fora y_4 \cdots \obs x_9 \in A_9. \operatorname{zmaga}_\text{M}(x_1,y_2,\dots, y_8,x_9) $$
 \pause
-kar lahko, če Matejevo zmago označimo z $1$, Tomaževo z $-1$ ter izenačenje z $0$, prepišemo v
+oz.\ kateri je najbolj ugoden izid, ki ga lahko doseže. Če Matejevo zmago označimo z $1$, Tomaževo z $-1$ ter izenačenje z $0$, je za Mateja najbolj ugoden izid
 
-$$\max_{x_1}. \min_{y_2}. \cdots \max_{x_9}. \operatorname{vrednost}(x_1, y_2,\dots, y_8, x_9) = 1\text{.}$$
+$$\max_{x_1\in A_1}. \min_{y_2\in A_2}. \cdots \max_{x_9\in A_9}. \operatorname{vrednost}(x_1, y_2,\dots, y_8, x_9)\text{.}$$
 
 
 \end{frame}
@@ -159,11 +160,11 @@ $$\max_{x_1}. \min_{y_2}. \cdots \max_{x_9}. \operatorname{vrednost}(x_1, y_2,\d
 \end{frame}
 
 \begin{frame}{Razmislek prvega igralca}
-Ker igra drugi igralec optimalno, po svoji potezi $x$ pričakujem zase najslabše nadaljevanje igre $\vec{y}$. Zato izračunam vrednosti najslabših nadaljevanj
+Ker igra drugi igralec optimalno, prvi po svoji potezi $x$ pričakuje zase najslabše nadaljevanje igre $\vec{y}$. Zato izračuna vrednosti najslabših nadaljevanj
 
 $$m_x =\min_{\vec{y}} \operatorname{vrednost(x,\vec{y})}$$
 
-ter najdem $$x_{\text{opti}} = \argmax \{m_x\mid x \text{ možna prva poteza} \}\text{.}$$
+ter najde $$x_{\text{opti}} = \argmax \{m_x\mid x \text{ možna prva poteza} \}\text{.}$$
 
 
 
