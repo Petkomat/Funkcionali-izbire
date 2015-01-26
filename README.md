@@ -32,7 +32,7 @@ iskanje optimalnega igranja igre NQueens. Avtor kode je Martin Escardo.
 
 V tej datoteki je dokumentirana implementacija funkcije izbire na
 Cantorjevem prostoru. Njen obstoj nam zagotavlja izrek Tihonova, ki
-zagotavlja, da je produkt kompaktnih (iskalnih) množic tudi sam
+pravi, da je produkt kompaktnih (iskalnih) množic tudi sam
 kompaktna (iskalna) množica. Avtor kode je Martin Escardo.
 
 ##Selections.hs
