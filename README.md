@@ -14,7 +14,7 @@ na koncu dodamo `?ts=4`.
 ##Paper.hs
 
 V tej datoteki je dokumentirana implementacija funkcij izbire in
-spremeljevalne kode avtorja Martina Escarda narejena po njegovem članku
+spremeljevalne kode avtorja Martina Escarda, narejene po njegovem članku
 What Sequential Games, the Tychonoff Theorem and the Double-Negation
 Shift have in Common, 2010.
 
@@ -31,9 +31,9 @@ iskanje optimalnega igranja igre NQueens. Avtor kode je Martin Escardo.
 ##Tychonoff.hs
 
 V tej datoteki je dokumentirana implementacija funkcije izbire na
-Cantorjevem prostoru. Njen obstoj nam zagotavlja Tychonov izrek, da je
-produkt kompaktnih (iskalnih) množic tudi kompaktna (iskalna) množica.
-Avtor kode je Martin Escardo.
+Cantorjevem prostoru. Njen obstoj nam zagotavlja izrek Tihonova, ki
+zagotavlja, da je produkt kompaktnih (iskalnih) množic tudi sam
+kompaktna (iskalna) množica. Avtor kode je Martin Escardo.
 
 ##Selections.hs
 
