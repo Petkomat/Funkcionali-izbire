@@ -5,7 +5,7 @@
 
 Repozitorij za projekt Funkcije izbire (Matematika s funkcijskim programiranjem)
 
-Datoteke s kodo se nahajajo v direktoriju Koda/.
+Datoteke s kodo se nahajajo v mapi `Koda`.
 Lažje so berljive, če nastavimo širino tabulatorja na `4`.
 To storimo tako, da URL-ju strani, na kateri beremo kodo,
 na koncu dodamo `?ts=4`.
